@@ -17,7 +17,7 @@ class Arena(object):
         # Constructor, pass in a player please. (for moving platforms)
         self.platform_list = pygame.sprite.Group()
         self.enemy_list = pygame.sprite.Group()
-        newenemy = enemy.Enemy()
+        newenemy = enemy.Enemy("dark")
         newenemy.rect.x, newenemy.rect.y = (10, 100)
         newenemy.level = self
         self.enemy_list.add(newenemy)
