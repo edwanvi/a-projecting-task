@@ -16,6 +16,8 @@ class Enemy(pygame.sprite.Sprite):
         self.image = pygame.Surface([width, height])
         if type == "fire":
             self.image.fill(constants.RED)
+        elif type == "dark":
+            self.image.fill(constants.BLACK)
         else:
             R = random.randint(0, 255)
             G = random.randint(0, 255)
@@ -55,12 +57,12 @@ class Enemy(pygame.sprite.Sprite):
             # Stop our vertical movement
             self.change_y = 0
         player = self.level.player
-        if self.change_y ==0:
+        if self.change_y == 0:
             if player.rect.x > self.rect.x:
                 self.change_x += 2.5
             elif player.rect.x < self.rect.x:
                 self.change_x -= 2.5
-            elif player.rect.x == self.rect.x:
+            elif player.rect.x == self.rect.x or abs(self.rect.x - player.rect.x) < 2:
                 player.health -= 10
                 print(player.health)
                 self.kill()
