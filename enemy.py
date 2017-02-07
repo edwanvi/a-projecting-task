@@ -57,16 +57,16 @@ class Enemy(pygame.sprite.Sprite):
             # Stop our vertical movement
             self.change_y = 0
         player = self.level.player
+        collided_things = pygame.sprite.spritecollideany(self, self.level.plist)
         if self.change_y == 0:
             if player.rect.x > self.rect.x:
-                self.change_x += 2.5
+                self.change_x += 1.5
             elif player.rect.x < self.rect.x:
-                self.change_x -= 2.5
-            elif player.rect.x == self.rect.x or abs(self.rect.x - player.rect.x) < 2:
+                self.change_x -= 1.5
+            elif player.rect.x == self.rect.x or abs(self.rect.x - player.rect.x) < 2 or len(collided_things) > 0:
                 player.health -= 10
                 print(player.health)
                 self.kill()
-        collidedthings = pygame.sprite.spritecollideany(self, self.level.player)
 
     def calc_grav(self):
         if self.change_y == 0:
