@@ -53,12 +53,16 @@ def main():
                     player.go_right()
                 elif event.key == pygame.K_UP:
                     player.jump()
+                elif event.key == pygame.K_SPACE:
+                    player.fire()
             elif event.type == pygame.KEYUP:
                 # key is released
                 if event.key == pygame.K_LEFT:
                     player.stop()
                 if event.key == pygame.K_RIGHT:
                     player.stop()
+                if event.key == pygame.K_SPACE:
+                    player.fire()
         # update sprite lists
         active_list.update()
         player.level.update()
