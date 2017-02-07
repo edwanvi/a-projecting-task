@@ -4,6 +4,7 @@ WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
 GREY = (211, 211, 211)
 RED = (255, 0, 0)
+LIGHTBLUE = (75, 0, 130)
 
 # Screen dimensions
 SCREEN_WIDTH = 800
