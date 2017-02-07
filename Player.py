@@ -4,7 +4,6 @@ import arena
 
 
 class Player(pygame.sprite.Sprite):
-    """docstring for Player."""
     def __init__(self):
         super(Player, self).__init__()
         width = 40
@@ -20,6 +19,8 @@ class Player(pygame.sprite.Sprite):
         self.change_y = 0
         # What can we hit?
         self.level = None
+        # direction for bullets
+        self.direction = "R"
 
     def update(self):
         self.calc_grav()
@@ -85,3 +86,27 @@ class Player(pygame.sprite.Sprite):
     def stop(self):
         """Called when the user lets off the keyboard. Doesn't change direction."""
         self.change_x = 0
+
+    def fire(self):
+        bull = Bullet(self)
+        bull.rect.x = self.rect.x
+        bull.rect.y = self.rect.y
+        self.level.enemy_list.add(bull)
+
+
+class Bullet(pygame.sprite.Sprite):
+    def __init__(self, player: Player):
+        super(Bullet, self).__init__()
+        self.player = player
+        self.direction = player.direction
+        self.change_x, self.change_y = (0, 0)
+        # image creation
+        width = 20
+        height = 20
+        self.image = pygame.Surface([width, height])
+        self.image.fill(constants.WHITE)
+        # We need to tell pygame about the image we had it make.
+        self.rect = self.image.get_rect()
+
+    def update(self):
+        pass
