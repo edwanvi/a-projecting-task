@@ -17,11 +17,14 @@ class Arena(object):
         # Constructor, pass in a player please. (for moving platforms)
         self.platform_list = pygame.sprite.Group()
         self.enemy_list = pygame.sprite.Group()
-        newenemy = enemy.Enemy("dark")
+        newenemy = enemy.Enemy()
         newenemy.rect.x, newenemy.rect.y = (10, 100)
         newenemy.level = self
         self.enemy_list.add(newenemy)
         self.player = player
+        # for collisions
+        self.plist = pygame.sprite.Group()
+        self.plist.add(player)
         # BG Image
         self.background = None
         # How far we've come in the world of scrolling.
@@ -38,9 +41,9 @@ class Arena(object):
         self.enemy_list.update()
 
     def draw(self, screen):
-        #Draw a level
+        # Draw a level
         screen.fill(constants.BLUE)
-        #Draw the sprites
+        # Draw the sprites
         self.platform_list.draw(screen)
         self.enemy_list.draw(screen)
 

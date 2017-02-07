@@ -46,7 +46,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.y += self.change_y
         # Y collision
         # Check and see if we hit anything
-        # we can't resuse the list because we have moved since it was made
+        # we can't reuse the list because we have moved since it was made
         block_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
         for block in block_hit_list:
             # Reset our position based on the top/bottom of the object.
@@ -66,6 +66,7 @@ class Enemy(pygame.sprite.Sprite):
                 player.health -= 10
                 print(player.health)
                 self.kill()
+        collidedthings = pygame.sprite.spritecollideany(self, self.level.player)
 
     def calc_grav(self):
         if self.change_y == 0:
