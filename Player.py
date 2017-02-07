@@ -21,9 +21,14 @@ class Player(pygame.sprite.Sprite):
         self.level = None
         # direction for bullets
         self.direction = "R"
+        self.killcount = 0
+        self.invul = False
+        self.invultime = 0
 
     def update(self):
         self.calc_grav()
+        if self.invultime > 0:
+            self.invul -= 1
         # move player by change_x
         self.rect.x += self.change_x
         # See if we hit anything and handle it
@@ -91,8 +96,11 @@ class Player(pygame.sprite.Sprite):
         bull = Bullet(self)
         bull.rect.x = self.rect.x
         bull.rect.y = self.rect.y
-        self.level.enemy_list.add(bull)
 
+    def set_invul(self, invul, time=120):
+        self.invul = invul
+        if invul:
+            self.invultime = time
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, player: Player):
@@ -104,9 +112,20 @@ class Bullet(pygame.sprite.Sprite):
         width = 20
         height = 20
         self.image = pygame.Surface([width, height])
-        self.image.fill(constants.WHITE)
+        self.image.fill(constants.LIGHTBLUE)
         # We need to tell pygame about the image we had it make.
         self.rect = self.image.get_rect()
+        self.player.level.other_list.add(self)
 
     def update(self):
-        pass
+        if self.change_x == 0 and self.change_y == 0:
+            if self.direction == "R":
+                self.change_x = 2.5
+            elif self.direction == "L":
+                self.change_x = -2.5
+        self.rect.x += self.change_x
+        self.rect.y += self.change_y
+        collided_things = pygame.sprite.spritecollide(self, self.player.level.enemy_list, True)
+        if len(collided_things) > 0:
+            self.kill()
+            self.player.killcount += 1
