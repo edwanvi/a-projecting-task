@@ -24,11 +24,14 @@ class Player(pygame.sprite.Sprite):
         self.killcount = 0
         self.invul = False
         self.invultime = 0
+        # cooldown on firing
+        self.cooldown = 0
 
     def update(self):
         self.calc_grav()
         if self.invultime > 0:
             self.invul -= 1
+        self.cooldown -= 1
         # move player by change_x
         self.rect.x += self.change_x
         # See if we hit anything and handle it
@@ -66,7 +69,7 @@ class Player(pygame.sprite.Sprite):
             self.change_y = 0
             self.rect.y = constants.SCREEN_HEIGHT - self.rect.height
 
-    ### PLAYER CONTROL METHODS ###
+    # PLAYER CONTROL METHODS #
     def jump(self):
         # Called when you, well, jump
         # make sure we have something to jump off of
@@ -93,14 +96,18 @@ class Player(pygame.sprite.Sprite):
         self.change_x = 0
 
     def fire(self):
-        bull = Bullet(self)
-        bull.rect.x = self.rect.x
-        bull.rect.y = self.rect.y
+        if self.cooldown <= 0:
+            bull = Bullet(self)
+            bull.rect.x = self.rect.x
+            bull.rect.y = self.rect.y
+        else:
+            pass
 
     def set_invul(self, invul, time=120):
         self.invul = invul
         if invul:
             self.invultime = time
+
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, player: Player):
@@ -120,9 +127,14 @@ class Bullet(pygame.sprite.Sprite):
     def update(self):
         if self.change_x == 0 and self.change_y == 0:
             if self.direction == "R":
-                self.change_x = 2.5
+                self.change_x = 3
             elif self.direction == "L":
-                self.change_x = -2.5
+                self.change_x = -3
+            if self.player.change_y != 0:
+                self.change_y = 3
+                self.player.change_y -= 2  # because physics
+                self.player.cooldown += 15
+            self.player.cooldown += 15
         self.rect.x += self.change_x
         self.rect.y += self.change_y
         collided_things = pygame.sprite.spritecollide(self, self.player.level.enemy_list, True)
