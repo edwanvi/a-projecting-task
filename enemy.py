@@ -5,7 +5,7 @@ import random
 
 class Enemy(pygame.sprite.Sprite):
     """docstring for Enemy."""
-    def __init__(self, type = None):
+    def __init__(self):
         super(Enemy, self).__init__()
         self.type = type
         self.change_x = 0.0
@@ -14,17 +14,12 @@ class Enemy(pygame.sprite.Sprite):
         width = 40
         height = 40
         self.image = pygame.Surface([width, height])
-        if type == "fire":
-            self.image.fill(constants.RED)
-        elif type == "dark":
-            self.image.fill(constants.BLACK)
-        else:
-            R = random.randint(0, 255)
-            G = random.randint(0, 255)
-            B = random.randint(0, 255)
-            color = (R, G, B)
-            print("I am " + str(color))
-            self.image.fill(color)
+        R = random.randint(0, 255)
+        G = random.randint(0, 255)
+        B = random.randint(0, 255)
+        color = (R, G, B)
+        print("I am " + str(color))
+        self.image.fill(color)
         # We need to tell pygame about the image we had it make.
         self.rect = self.image.get_rect()
 
@@ -60,11 +55,11 @@ class Enemy(pygame.sprite.Sprite):
         collided_things = pygame.sprite.spritecollideany(self, self.level.plist)
         if self.change_y == 0:
             if player.rect.x > self.rect.x:
-                self.change_x += 1.5
+                self.change_x += constants.ENEMY_MOVE_SPEED
             elif player.rect.x < self.rect.x:
-                self.change_x -= 1.5
+                self.change_x -= constants.ENEMY_MOVE_SPEED
             elif player.rect.x == self.rect.x or abs(self.rect.x - player.rect.x) < 2 or len(collided_things) > 0:
-                player.health -= 10
+                player.health -= 1
                 print(player.health)
                 self.kill()
 
