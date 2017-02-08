@@ -20,8 +20,10 @@ class Arena(object):
         self.platform_list = pygame.sprite.Group()
         self.enemy_list = pygame.sprite.Group()
         self.other_list = pygame.sprite.Group()
+        x = random.randint(0, constants.SCREEN_WIDTH)
+        y = random.randint(0, constants.SCREEN_HEIGHT)
         newenemy = enemy.Enemy()
-        newenemy.rect.x, newenemy.rect.y = (10, 100)
+        newenemy.rect.x, newenemy.rect.y = (x, y)
         newenemy.level = self
         self.enemy_list.add(newenemy)
         self.player = player
@@ -46,7 +48,7 @@ class Arena(object):
         self.enemy_list.update()
         self.other_list.update()
         self.spawntimer += 1
-        if self.spawntimer > 99:
+        if self.spawntimer > 99 and len(self.enemy_list) == 0:
             difficulty = math.sqrt(self.player.killcount) * 2  # number of enemies to spawn
             difficulty = round(difficulty)
             if difficulty == 0 and self.player.killcount > 0:
