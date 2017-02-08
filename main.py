@@ -47,22 +47,24 @@ def main():
                 done = True
             elif event.type == pygame.KEYDOWN:
                 # handle key inputs
-                if event.key == pygame.K_LEFT:
+                if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                     player.go_left()
-                elif event.key == pygame.K_RIGHT:
+                elif event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                     player.go_right()
-                elif event.key == pygame.K_UP:
+                elif event.key == pygame.K_UP or event.key == pygame.K_w:
                     player.jump()
                 elif event.key == pygame.K_SPACE:
                     player.fire()
             elif event.type == pygame.KEYUP:
                 # key is released
-                if event.key == pygame.K_LEFT:
+                if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                     player.stop()
-                if event.key == pygame.K_RIGHT:
+                if event.key == pygame.K_RIGHT or event.key == pygame.K_w:
                     player.stop()
                 if event.key == pygame.K_SPACE:
                     player.fire()
+        if pygame.key.get_pressed()[pygame.K_SPACE]:
+            player.fire()
         # update sprite lists
         active_list.update()
         player.level.update()
