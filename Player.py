@@ -6,9 +6,9 @@ import arena
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super(Player, self).__init__()
-        width = 40
-        height = 40
-        self.image = pygame.Surface([width, height])
+        self.width = 40
+        self.height = 40
+        self.image = pygame.Surface([self.width, self.height])
         self.image.fill(constants.WHITE)
         # We need to tell pygame about the image we had it make.
         self.rect = self.image.get_rect()
@@ -98,8 +98,12 @@ class Player(pygame.sprite.Sprite):
     def fire(self):
         if self.cooldown <= 0:
             bull = Bullet(self)
-            bull.rect.x = self.rect.x
-            bull.rect.y = self.rect.y
+            if self.change_y == 0 and self.direction == "L":
+                bull.rect.x = self.rect.x
+                bull.rect.y = self.rect.y - (self.height / 2)
+            elif self.change_y == 0 and self.direction == "R":
+                bull.rect.x = self.rect.x + self.width
+                bull.rect.y = self.rect.y - (self.height / 2)
         else:
             pass
 
@@ -132,6 +136,7 @@ class Bullet(pygame.sprite.Sprite):
                 self.change_x = -3
             if self.player.change_y != 0:
                 self.change_y = 3
+                self.change_x = 0
                 self.player.change_y -= 2  # because physics
                 self.player.cooldown += 15
             self.player.cooldown += 15
