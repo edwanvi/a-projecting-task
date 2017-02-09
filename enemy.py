@@ -52,16 +52,19 @@ class Enemy(pygame.sprite.Sprite):
             # Stop our vertical movement
             self.change_y = 0
         player = self.level.player
-        collided_things = pygame.sprite.spritecollideany(self, self.level.plist)
         if self.change_y == 0:
             if player.rect.x > self.rect.x:
-                self.change_x += constants.ENEMY_MOVE_SPEED
+                self.change_x = constants.ENEMY_MOVE_SPEED
             elif player.rect.x < self.rect.x:
-                self.change_x -= constants.ENEMY_MOVE_SPEED
-            elif player.rect.x == self.rect.x or abs(self.rect.x - player.rect.x) < 2 or len(collided_things) > 0:
-                player.health -= 1
-                print(player.health)
-                self.kill()
+                self.change_x = -constants.ENEMY_MOVE_SPEED
+            if player.rect.y < self.rect.y and self.change_y == 0 and bool(random.getrandbits(1)):
+                self.jump(7)
+            if self.rect.colliderect(player.rect):
+                if not player.invul:
+                    player.health -= 1
+                    player.killcount += 1
+                    print(player.health)
+                    self.kill()
 
     def calc_grav(self):
         if self.change_y == 0:
@@ -72,3 +75,13 @@ class Enemy(pygame.sprite.Sprite):
         if self.rect.y >= constants.SCREEN_HEIGHT - self.rect.height and self.change_y >= 0:
             self.change_y = 0
             self.rect.y = constants.SCREEN_HEIGHT - self.rect.height
+
+    def jump(self, power):
+        # make sure we have something to jump off of
+        self.rect.y += 2
+        platform_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
+        self.rect.y -= 2
+
+        # If it is ok to jump, set our speed upwards
+        if len(platform_hit_list) > 0 or self.rect.bottom >= constants.SCREEN_HEIGHT:
+            self.change_y = -power
