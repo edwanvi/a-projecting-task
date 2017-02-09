@@ -100,10 +100,13 @@ class Player(pygame.sprite.Sprite):
             bull = Bullet(self)
             if self.change_y == 0 and self.direction == "L":
                 bull.rect.x = self.rect.x
-                bull.rect.y = self.rect.y - (self.height / 2)
+                bull.rect.y = self.rect.y + (self.height / 2) - 10
             elif self.change_y == 0 and self.direction == "R":
                 bull.rect.x = self.rect.x + self.width
-                bull.rect.y = self.rect.y - (self.height / 2)
+                bull.rect.y = self.rect.y + (self.height / 2) - 10
+            else:
+                bull.rect.x = self.rect.x + (self.width / 2) - 10
+                bull.rect.y = self.rect.bottom
         else:
             pass
 
