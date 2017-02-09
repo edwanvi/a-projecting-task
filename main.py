@@ -4,6 +4,7 @@ import pygame
 import constants
 from Player import Player
 from arena import *
+import utils
 
 def main():
     print("Starting up...")
@@ -45,6 +46,7 @@ def main():
             if event.type == pygame.QUIT:
                 print("Shutting down...")
                 done = True
+                print("Score: " + utils.calculate_score(player.killcount, pygame.time.get_ticks()))
             elif event.type == pygame.KEYDOWN:
                 # handle key inputs
                 if event.key == pygame.K_LEFT or event.key == pygame.K_a:
@@ -68,6 +70,11 @@ def main():
         # update sprite lists
         active_list.update()
         player.level.update()
+        # check if player is dead after updates
+        if player.health <= 0:
+            done = True
+            print("You died!")
+            print("Score: " + utils.calculate_score(player.killcount, pygame.time.get_ticks()))
         # scrolling
         if player.rect.right >= 500:
             diff = player.rect.right - 500
