@@ -46,7 +46,7 @@ def main():
             if event.type == pygame.QUIT:
                 print("Shutting down...")
                 done = True
-                print("Score: " + utils.calculate_score(player.killcount, pygame.time.get_ticks()))
+                print("Score: " + str(utils.calculate_score(player.killcount, pygame.time.get_ticks())))
             elif event.type == pygame.KEYDOWN:
                 # handle key inputs
                 if event.key == pygame.K_LEFT or event.key == pygame.K_a:
