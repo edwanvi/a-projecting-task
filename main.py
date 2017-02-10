@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 # coding=utf-8
-import pygame
-import constants
 from Player import Player
 from arena import *
 import utils
+
 
 def main():
     print("Starting up...")
@@ -74,7 +73,7 @@ def main():
         if player.health <= 0:
             done = True
             print("You died!")
-            print("Score: " + utils.calculate_score(player.killcount, pygame.time.get_ticks()))
+            print("Score: " + str(utils.calculate_score(player.killcount, pygame.time.get_ticks())))
         # scrolling
         if player.rect.right >= 500:
             diff = player.rect.right - 500
