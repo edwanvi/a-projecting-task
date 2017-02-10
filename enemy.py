@@ -18,7 +18,8 @@ class Enemy(pygame.sprite.Sprite):
         G = random.randint(0, 255)
         B = random.randint(0, 255)
         color = (R, G, B)
-        print("I am " + str(color))
+        self.jumppower = random.randint(0, 20)
+        self.speed = random.uniform(1, constants.ENEMY_MOVE_SPEED)
         self.image.fill(color)
         # We need to tell pygame about the image we had it make.
         self.rect = self.image.get_rect()
@@ -38,6 +39,7 @@ class Enemy(pygame.sprite.Sprite):
                 # Otherwise if we are moving left, do the opposite.
                 self.rect.left = block.rect.right
                 self.change_x = -1
+            self.jump(self.jumppower)
         self.rect.y += self.change_y
         # Y collision
         # Check and see if we hit anything
@@ -54,11 +56,11 @@ class Enemy(pygame.sprite.Sprite):
         player = self.level.player
         if self.change_y == 0:
             if player.rect.x > self.rect.x:
-                self.change_x = constants.ENEMY_MOVE_SPEED
+                self.change_x = self.speed
             elif player.rect.x < self.rect.x:
-                self.change_x = -constants.ENEMY_MOVE_SPEED
+                self.change_x = -self.speed
             if player.rect.y < self.rect.y and self.change_y == 0 and bool(random.getrandbits(1)):
-                self.jump(7)
+                self.jump(self.jumppower)
             if self.rect.colliderect(player.rect):
                 if not player.invul:
                     player.health -= 1
