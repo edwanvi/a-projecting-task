@@ -31,7 +31,8 @@ class Player(pygame.sprite.Sprite):
         self.calc_grav()
         if self.invultime > 0:
             self.invul -= 1
-        self.cooldown -= 1
+        if self.cooldown > 0:
+            self.cooldown -= 1
         # move player by change_x
         self.rect.x += self.change_x
         # See if we hit anything and handle it
@@ -107,6 +108,7 @@ class Player(pygame.sprite.Sprite):
             else:
                 bull.rect.x = self.rect.x + (self.width / 2) - 10
                 bull.rect.y = self.rect.bottom
+            self.cooldown = 15
         else:
             pass
 
@@ -141,8 +143,6 @@ class Bullet(pygame.sprite.Sprite):
                 self.change_y = 3
                 self.change_x = 0
                 self.player.change_y -= 2  # because physics
-                self.player.cooldown += 15
-            self.player.cooldown += 15
         self.rect.x += self.change_x
         self.rect.y += self.change_y
         collided_things = pygame.sprite.spritecollide(self, self.player.level.enemy_list, True)
