@@ -35,10 +35,14 @@ class Arena(object):
         # How far we've come in the world of scrolling.
         self.world_shift = 0
         self.level_limit = -1000
-        newplat = Platform(10, 10)
-        newplat.rect.x = 10
-        newplat.rect.y = 550
-        self.platform_list.add(newplat)
+        platnumber = random.randint(1, 100)
+        i = 0
+        while i < platnumber:
+            newplat = Platform(random.randint(40, 75), 10)
+            newplat.rect.x = random.randint(-2000, 2000)
+            newplat.rect.y = random.randint(0, constants.SCREEN_HEIGHT + 10)
+            self.platform_list.add(newplat)
+            i += 1
         # time since last spawn
         self.spawntimer = 0
 
